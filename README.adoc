@@ -153,9 +153,17 @@ L'architecture hexagonale regroupe en diverses composants  commuable entre eux. 
 
 [REPONSE]:
 
+Le pattern "principe de ségrégation des interfaces" des principes SOLID. Aucun client  n'est responsable  d'une méthode qu'il  n'applique pas.
 
+List<TodoItem> getAllTodoItems();
 
 IMPORTANT: [Question] Qu'est ce que l'anti-pattern domaine anémique ? à quoi le reconnaît-on ? Est-il courant dans les modèles en couche classiques ? L'architecture hexagonale change-t-elle cette situation ?
+
+[REPONSE]:
+
+C'est un domaine logiciel où les objets de domaine compte peu de logique métier. Souvent des opérations CRUD. 
+
+La logique métier est complexe dans les modèles en couche classiques, il n'est donc pas présent dans ces modèles.
 
 Complétez ce code avec une fonctionnalité de création de `TodoItem` persisté en base et appelé depuis un endpoint REST `POST /todos` qui renvoi un code `201` en cas de succès. La fonctionnalité à implémenter est contractualisée par le port d'entrée `AddTodoItem`.
 
