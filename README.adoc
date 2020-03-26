@@ -67,7 +67,7 @@ IMPORTANT: [Question] Que se passe-t-il si l'on renomme une colonne de la base d
 
 IMPORTANT: [Question] Où se trouve le code métier (voir la règle de gestion RG1) ? cette règle est-elle facilement testable par un test unitaire ?
 
-[REPONSE] : Le code métier (RG1) se trouve au sein du controller de l'application. Un test unitaire permet de vérifier le bon fonctionnement d'une partie précise d'un programme. De ce fait, le code métier est donc facilement testable par un test unitaire.
+[REPONSE] : Le code métier (RG1) se trouve au sein du controller de l'application ; c'est à dire dans la classe TodoListController.java. Un test unitaire permet de vérifier le bon fonctionnement d'une partie précise d'un programme. De ce fait, le code métier est donc facilement testable par un test unitaire.
 
 * Lancer une base PostgreSQL en Docker :
 bash
@@ -81,8 +81,8 @@ IMPORTANT: [Question] Expliquer cette ligne de commande (y compris les options u
 docker run : Exécutez une commande dans un nouveau conteneur.
 --rm : Retirer un ou plusieurs conteneurs.
 -it : Ouvre un terminal permettant d'exécuter des commandes
--e : Définir les variables d'environnement.
--p : Publier les ports d'un conteneur sur l'hôte.
+-e POSTGRES_PASSWORD=password : Définir les variables d'environnement.
+-p 5432:5432 postgres : Redirige dy port 5432 du conteneur vers le port 5432 de l'hôte.
 
 IMPORTANT: [Question] Lancer les commandes `docker ps` et `ps -eaf | grep postgres`, à quoi correspondent les lignes affichées ? Que remarquez vous ?
 
