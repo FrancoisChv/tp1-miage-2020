@@ -2,63 +2,89 @@
 
 NOTE: TP de deux slots de 1h20
 
-## Nom des étudiants de ce binôme 
+## Nom des étudiants de ce binôme
 WARNING: NE PAS OUBLIER DE MENTIONNER LES DEUX NOMS !
 
-#XXX# et #YYY#
+CHAUVEAU Francois, OZTOPRAK David et KAMGUE Vanessa
 
-Commentaires éventuels des étudiants : #XXXXXX#
+Commentaires éventuels des étudiants : trinôme
 
-## Pré-requis 
+## Pré-requis
 
-WARNING: A faire impérativement *AVANT* le TP, nous n'aurons pas le temps pendant !
+WARNING: A faire impérativement AVANT le TP, nous n'aurons pas le temps pendant !
 
 * disposer d'au moins un compte Github par binôme ;
 * apporter au moins un portable Linux, MacOS ou Microsoft Windows par binôme ;
-* un JDK 8+  (conseillé : OpenJdk. Sous linux, installer le paquet `openjdk-13-jdk` par exemple) ;
+* un JDK 8+ (conseillé : OpenJdk. Sous linux, installer le paquet `openjdk-13-jdk` par exemple) ;
 * Eclipse 2019+ installé avec le plugin 'DBeaver IDE' ;
 * un démon Docker récent 2018+ ;
 * disposer d'une image Docker Postgresql en local, faire `docker pull postgres` ;
 * un client REST (conseillés : https://insomnia.rest/[Insomnia] ou https://www.postman.com/[Postman]) ;
-* forker sur Github le projet `bflorat/tp1-miage-2020` puis cloner votre dépôt Github dans votre workspace. Attention : *un seul fork par binôme*  ;
-* Pour les étudiants désirant utiliser la connexion de l'université, il faudra configurer le proxy de l'université dans les différents outils (Docker, Git, Eclipse) *avant le TP*.
+forker sur Github le projet `bflorat/tp1-miage-2020` puis cloner votre dépôt Github dans votre workspace. Attention : un seul fork par binôme* ;
+Pour les étudiants désirant utiliser la connexion de l'université, il faudra configurer le proxy de l'université dans les différents outils (Docker, Git, Eclipse) avant le TP*.
 
 # Déroulement du TP
 
-NOTE: Il est vivement conseillé d'utiliser votre connexion Internet personnelle, pas le wifi de l'université (pour lequel il faut configurer le proxy HTTP). Les élèves désirant utiliser la connexion de l'université devront configurer le proxy dans les différents outils eux mêmes et avant le TP. 
+NOTE: Il est vivement conseillé d'utiliser votre connexion Internet personnelle, pas le wifi de l'université (pour lequel il faut configurer le proxy HTTP). Les élèves désirant utiliser la connexion de l'université devront configurer le proxy dans les différents outils eux mêmes et avant le TP.
 
 NOTE: [Rappel sur Git] Trois dépôts sont ici utilisés: le dépot Github de l'enseignant (`bflorat/tp1-miage-2020`), le dépot Github du binôme (`etudiant_x/tp1-miage-2020`), le dépot local sur le portable de l'un ou des deux étudiants du binôme.
 
 NOTE: Pour importer un projet maven existant dans Eclipse, faire `File` -> `Import` -> `Import existing Maven project` et cocher le(s) projet(s) à importer.
 
 
-Veuillez *répondre aux questions de la feuille de TP juste sous la question* (en modifiant, commitant puis poussant le fichier `README.adoc`).
+Veuillez répondre aux questions de la feuille de TP juste sous la question (en modifiant, commitant puis poussant le fichier `README.adoc`).
 
-Nous fournissons différents projets Eclipse servant de base de travail aux exercices suivant. Cela permet un point de synchronisation de tous les étudiants à différents moments du TP. 
+Nous fournissons différents projets Eclipse servant de base de travail aux exercices suivant. Cela permet un point de synchronisation de tous les étudiants à différents moments du TP.
 
 TIP: fermez chaque projet Eclipse (sans supprimer les sources) avant de passer à l'exercice suivant pour éviter de confondre les sources.
 
 
 # Exercice 1 - Etudier une API REST sans couches
-_Temps estimé : 1 h_
+Temps estimé : 1 h
 
 * Importer dans Eclipse les projets `todolist-debut-ex1` et `todolist-debut-ex2`.
 
 * Observer le code du projet `todolist-debut-ex1`
 
-IMPORTANT: [Question]  Que constatez-vous  en terme de découpage du code ? Imaginez un projet d'entreprise constitué de centaines de classes ainsi structuré. Que risque-t-il d'arriver ?
+IMPORTANT: [Question] Que constatez-vous en terme de découpage du code ? Imaginez un projet d'entreprise constitué de centaines de classes ainsi structuré. Que risque-t-il d'arriver ?
 
-IMPORTANT: [Question]  Que se passe-t-il si l'on renomme une colonne de la base de donnée ?
+[Réponse] : Le code est découpé en 4 parties ; à savoir :
 
-IMPORTANT: [Question]  Où se trouve le code métier (voir la règle de gestion RG1) ? cette règle est-elle facilement testable par un test unitaire ? 
+TodoItem.java : Représentant un item.
+TodoItemRepository.java : Représentant la liste des items.
+TodolistApplication.java : Représentant l'application .
+TodoListController.java : Représentant le controller de l'application.
+
+Aussi, chacune des classes fait appel aux autres. Il y a donc de fortes dépendances.
+De plus, cette application suit un pattern MVC (Model, View, Controller).
+Enfin, nous remarquons que cette application n'est pas conçue comme une architecture en couche.
+
+Utiliser ce genre d'architecture risque de provoquer de nombreux problèmes. En effet, avec 100aines de classes, cela provoquerait des problèmes de gestion et rendrait le projet illisible et fastidieux en terme de maintenance.
+
+IMPORTANT: [Question] Que se passe-t-il si l'on renomme une colonne de la base de donnée ?
+
+[REPONSE] : L'application ne fonctionnerait plus. Car il existe un lien de "mapping" entre les objets de l'application et les éléments de la base de données.
+
+IMPORTANT: [Question] Où se trouve le code métier (voir la règle de gestion RG1) ? cette règle est-elle facilement testable par un test unitaire ?
+
+[REPONSE] : Le code métier (RG1) se trouve au sein du controller de l'application. Un test unitaire permet de vérifier le bon fonctionnement d'une partie précise d'un programme. De ce fait, le code métier est donc facilement testable par un test unitaire.
 
 * Lancer une base PostgreSQL en Docker :
-```bash
+bash
 docker run --rm -it -e POSTGRES_PASSWORD=password -p 5432:5432 postgres
-```
-IMPORTANT: [Question]  Expliquer cette ligne de commande (y compris les options utilisées)
 
-IMPORTANT: [Question]  Lancer les commandes `docker ps` et `ps -eaf | grep postgres`, à quoi correspondent les lignes affichées ? Que remarquez vous ?
+
+IMPORTANT: [Question] Expliquer cette ligne de commande (y compris les options utilisées)
+
+[REPONSE] :
+
+docker run : Exécutez une commande dans un nouveau conteneur.
+--rm : Retirer un ou plusieurs conteneurs.
+-it : Ouvre un terminal permettant d'exécuter des commandes
+-e : Définir les variables d'environnement.
+-p : Publier les ports d'un conteneur sur l'hôte.
+
+IMPORTANT: [Question] Lancer les commandes `docker ps` et `ps -eaf | grep postgres`, à quoi correspondent les lignes affichées ? Que remarquez vous ?
 
 * Compléter le code manquant dans la méthode `TodoListController.createTodoItem()`
 
@@ -69,45 +95,45 @@ IMPORTANT: [Question]  Lancer les commandes `docker ps` et `ps -eaf | grep postg
 
 [NOTE]
 ====
-* les endpoints sont donnés dans le contrôleur via les annotation `@XYZMapping` 
-* Exemple de contenu JSON : 
+* les endpoints sont donnés dans le contrôleur via les annotation `@XYZMapping`
+* Exemple de contenu JSON :
 
-```json
+json
 {
-    "id": "0f8-06eb17ba8d34",
-    "time": "2020-02-27T10:31:43Z",
-    "content": "Faire les courses"
-  }
-```
+"id": "0f8-06eb17ba8d34",
+"time": "2020-02-27T10:31:43Z",
+"content": "Faire les courses"
+}
+
 ====
 
 * Quand les deux endpoints fonctionnent, faire un push vers Github et fermer le projet Eclipse (ne pas le supprimer).
 
 # Exercice 2 - Refactoring en architecture hexagonale
-_Temps estimé : 1 h_
+Temps estimé : 1 h
 
 * Partir du projet `todolist-debut-ex2`
 
 
-NOTE: le projet a été refactoré suivant les principes de l'architecture hexagonale : 
+NOTE: le projet a été refactoré suivant les principes de l'architecture hexagonale :
 
 image::images/archi_hexagonale.png[]
 Source : http://leanpub.com/get-your-hands-dirty-on-clean-architecture[Tom Hombergs]
 
-* Ici, comme souvent, le domaine métier est découpés en deux couches : 
-  - la couche application qui contient tous les contrats : ports (interfaces) et les implémentations des ports d'entrée (ou "use case") et qui servent à orchestrer les entités.
-  - la couche entités qui contient les entités (au sens DDD, pas au sens JPA). En général, classes complexes (méthodes riches, relations entre les entités,  pas de simples POJO anémiques)
+* Ici, comme souvent, le domaine métier est découpés en deux couches :
+- la couche application qui contient tous les contrats : ports (interfaces) et les implémentations des ports d'entrée (ou "use case") et qui servent à orchestrer les entités.
+- la couche entités qui contient les entités (au sens DDD, pas au sens JPA). En général, classes complexes (méthodes riches, relations entre les entités, pas de simples POJO anémiques)
 
 IMPORTANT: [Question] En observant le code, donnez les grands principes de cette architecture et les illustrer par des exemples de code.
 
-IMPORTANT: [Question] Avec quel pattern est implémenté ici le principe d'inversion de dépendance ? (par exemple le domaine n'a aucune dépendance directe vers l'adaptateur JPA de persistance mais pourtant, il cette dernière est appelé _in fine_). Précisez les lignes de code importantes.
+IMPORTANT: [Question] Avec quel pattern est implémenté ici le principe d'inversion de dépendance ? (par exemple le domaine n'a aucune dépendance directe vers l'adaptateur JPA de persistance mais pourtant, il cette dernière est appelé in fine). Précisez les lignes de code importantes.
 
 IMPORTANT: [Question] Qu'est ce que l'anti-pattern domaine anémique ? à quoi le reconnaît-on ? Est-il courant dans les modèles en couche classiques ? L'architecture hexagonale change-t-elle cette situation ?
 
-Complétez ce code avec une fonctionnalité de création de `TodoItem`  persisté en base et appelé depuis un endpoint REST `POST /todos` qui renvoi un code `201` en cas de succès. La fonctionnalité à implémenter est contractualisée par le port d'entrée `AddTodoItem`.
+Complétez ce code avec une fonctionnalité de création de `TodoItem` persisté en base et appelé depuis un endpoint REST `POST /todos` qui renvoi un code `201` en cas de succès. La fonctionnalité à implémenter est contractualisée par le port d'entrée `AddTodoItem`.
 
 # Exercice 3 - Ecriture de tests
-_Temps estimé : 20 mins_
+Temps estimé : 20 mins
 
 * Rester sur le même code que l'exercice 2
 
