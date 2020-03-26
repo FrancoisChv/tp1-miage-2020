@@ -101,6 +101,10 @@ public void createTodoItem(@RequestBody TodoItem todoItem) {
 
 * Pourquoi `todoItemRepository` est-il `null` ? Quelle est la meilleure façon de l'injecter ? Modifier le code en conséquence.
 
+[REPONSE]:
+
+En effet, il est nul car il n'a pas pu être injecté. Il faudrait passer par le constructeur en appliquant une annotation. 
+
 * Tester vos endpoints avec un client REST.
 
 
