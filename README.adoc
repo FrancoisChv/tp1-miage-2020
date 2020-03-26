@@ -67,7 +67,7 @@ IMPORTANT: [Question] Que se passe-t-il si l'on renomme une colonne de la base d
 
 IMPORTANT: [Question] Où se trouve le code métier (voir la règle de gestion RG1) ? cette règle est-elle facilement testable par un test unitaire ?
 
-[REPONSE] : Le code métier (RG1) se trouve au sein du controller de l'application. Un test unitaire permet de vérifier le bon fonctionnement d'une partie précise d'un programme. De ce fait, le code métier est donc facilement testable par un test unitaire.
+[REPONSE] : Le code métier (RG1) se trouve au sein du controller de l'application. Un test unitaire permet de vérifier le bon fonctionnement d'une partie précise d'un programme. De ce fait, le code métier est donc facilement testable par un test unitaire. Le code métier se trouve dans la class todoListController.
 
 * Lancer une base PostgreSQL en Docker :
 bash
@@ -88,7 +88,8 @@ IMPORTANT: [Question] Lancer les commandes `docker ps` et `ps -eaf | grep postgr
 
 [REPONSE]:
 
-à compléter
+'docker ps'  énumère les conteneurs avec l'id du conteneur.
+'ps -eaf | grep postgres' énumère les processus des utilisateurs.
 
 *
 Compléter le code manquant dans la méthode `TodoListController.createTodoItem()`
@@ -103,7 +104,7 @@ public void createTodoItem(@RequestBody TodoItem todoItem) {
 
 [REPONSE]:
 
-En effet, il est nul car il n'a pas pu être injecté. Il faudrait passer par le constructeur en appliquant une annotation. 
+En effet, il est nul car il n'a pas pu être injecté. Il faudrait passer par le constructeur en appliquant une annotation. Annotation @inject et son import
 
 * Tester vos endpoints avec un client REST.
 
@@ -141,7 +142,18 @@ Source : http://leanpub.com/get-your-hands-dirty-on-clean-architecture[Tom Hombe
 
 IMPORTANT: [Question] En observant le code, donnez les grands principes de cette architecture et les illustrer par des exemples de code.
 
-IMPORTANT: [Question] Avec quel pattern est implémenté ici le principe d'inversion de dépendance ? (par exemple le domaine n'a aucune dépendance directe vers l'adaptateur JPA de persistance mais pourtant, il cette dernière est appelé in fine). Précisez les lignes de code importantes.
+[REPONSE]:
+
+L'architecture hexagonale regroupe en diverses composants  commuable entre eux. Selon trois principes :
+- Séparation Application, Domain et Infrastructure.
+- Domain contient les dépendances.
+- Les frontières sont isolés par des Ports et Adapters.
+
+ IMPORTANT: [Question] Avec quel pattern est implémenté ici le principe d'inversion de dépendance ? (par exemple le domaine n'a aucune dépendance directe vers l'adaptateur JPA de persistance mais pourtant, il cette dernière est appelé in fine). Précisez les lignes de code importantes.
+
+[REPONSE]:
+
+
 
 IMPORTANT: [Question] Qu'est ce que l'anti-pattern domaine anémique ? à quoi le reconnaît-on ? Est-il courant dans les modèles en couche classiques ? L'architecture hexagonale change-t-elle cette situation ?
 
@@ -155,3 +167,8 @@ Temps estimé : 20 mins
 * Implémentez (en junit) des TU sur la règle de gestion qui consiste à afficher `[LATE!]` dans la description d'un item en retard de plus de 24h.
 
 * Quels types de tests devra-t-on écrire pour les adapteurs ? Que teste-on dans ce cas ? S'il vous reste du temps, écrivez quelques uns de ces types de test.
+
+[REPONSE]:
+
+Pour les adapteurs, il faudrait  avancer des tests d'intégration.
+Dans ce cas,  les réactions application vs extérieur seraient alors testés.
