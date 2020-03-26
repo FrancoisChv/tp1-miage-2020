@@ -95,7 +95,9 @@ Compléter le code manquant dans la méthode `TodoListController.createTodoItem(
 
 [REPONSE]:
 
-public void 
+public void createTodoItem(@RequestBody TodoItem todoItem) {
+  this.todoItemRepository.save(todoItem);
+}
 
 * Pourquoi `todoItemRepository` est-il `null` ? Quelle est la meilleure façon de l'injecter ? Modifier le code en conséquence.
 
